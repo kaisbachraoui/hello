@@ -1,14 +1,22 @@
 version: '3.8'
 services:
   db:
-    image: mysql:8.0
+    image: postgres:15
     environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: testdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: security_findings
     ports:
-      - "3306:3306"
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
   backend:
     build: ./backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/security_findings
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      APP_JWT_SECRET: change-this-secret-to-32-characters-minimum
     ports:
       - "8080:8080"
     depends_on:
@@ -16,6 +24,9 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "3000:80"
+      - "4200:80"
     depends_on:
       - backend
+
+volumes:
+  db_data:
