@@ -1,12 +1,11 @@
-# Frontend Dockerfile
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 WORKDIR /app
-COPY package.json vite.config.js ./
-COPY src ./src
-COPY public ./public
-RUN npm install && npm run build
+COPY package.json package-lock.json* ./
+RUN npm install
+COPY . .
+RUN npm run build
 
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
+FROM nginx:1.25-alpine
+COPY --from=build /app/dist/security-findings-frontend /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,44 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$blue-palette,
+    tertiary: mat.$teal-palette
+  ),
+  typography: (
+    brand-family: 'Roboto, sans-serif'
+  )
+));
+
+:root {
+  @include mat.all-component-themes($theme);
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: #f5f6fa;
+  color: #1a1c1f;
+}
+
+.page-container {
+  padding: 24px;
+}
+
+.toolbar-title {
+  font-weight: 600;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.table-actions {
+  display: flex;
+  gap: 8px;
+}
